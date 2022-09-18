@@ -7,10 +7,14 @@
 
 import UIKit
 import Kingfisher
+import Combine
 
 final class CointTVC: UITableViewCell {
     
     static let identifier = "CointTVC"
+    
+    @Published var coin: CoinModel!
+    private var subscriptions = Set<AnyCancellable>()
     
     private lazy var coinImageView: UIImageView = {
         let imageView = UIImageView()
@@ -19,7 +23,7 @@ final class CointTVC: UITableViewCell {
         return imageView
     }()
     
-    lazy var coinTitleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = .systemFont(ofSize: 16, weight: .regular)
@@ -29,7 +33,7 @@ final class CointTVC: UITableViewCell {
         return label
     }()
     
-    lazy var coinCodeLabel: UILabel = {
+    lazy var codeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .grayColor
         label.font = .systemFont(ofSize: 16, weight: .thin)
@@ -40,7 +44,7 @@ final class CointTVC: UITableViewCell {
     }()
     
     private lazy var titlesStackView: UIStackView = {
-        var stackView = UIStackView(arrangedSubviews: [coinTitleLabel, coinCodeLabel])
+        var stackView = UIStackView(arrangedSubviews: [titleLabel, codeLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .trailing
@@ -116,6 +120,46 @@ final class CointTVC: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCoin(coin: CoinModel) {
+        self.coin = coin
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        
+        RealmManager.shared().$updatedCoin.sink(receiveValue: { [weak self] receivedValue in
+            guard let self = self else { return }
+            
+            if let receivedValue = receivedValue {
+                if self.coin.name == receivedValue.name {
+                    self.coin = receivedValue
+                }
+            }
+        }).store(in: &subscriptions)
+        
+        $coin.sink(receiveValue: { [weak self] receivedCoin in
+            guard let self = self else { return }
+            
+            if let receivedCoin = receivedCoin {
+                
+                if let imageURLString = receivedCoin.imageStringURL,
+                    let imageURL = URL(string: imageURLString) {
+                    self.coinImageView.kf.setImage(
+                        with: imageURL,
+                        options: kingfisherOptions)
+                }
+
+                self.titleLabel.text = receivedCoin.name
+                self.codeLabel.text = receivedCoin.code
+                
+                //Add type of price dentine for animation
+                self.priceView.setValue(value: receivedCoin.lastPrice)
+                self.minPriceView.setValue(value: receivedCoin.minPrice)
+                self.maxPriceView.setValue(value: receivedCoin.maxPrice)
+            }
+        }).store(in: &subscriptions)
     }
     
     func setupConstraints() {

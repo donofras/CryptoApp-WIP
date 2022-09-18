@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		935EB94D28D646E500012B9D /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935EB94C28D646E500012B9D /* RealmManager.swift */; };
+		935EB94F28D6473400012B9D /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935EB94E28D6473400012B9D /* CoinModel.swift */; };
+		935EB95528D7C5F300012B9D /* CoinsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935EB95428D7C5F300012B9D /* CoinsDataSource.swift */; };
 		93EF66F628D4512D00BD32B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EF66F528D4512D00BD32B6 /* AppDelegate.swift */; };
 		93EF66FF28D4512E00BD32B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93EF66FE28D4512E00BD32B6 /* Assets.xcassets */; };
 		93EF670228D4512E00BD32B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93EF670028D4512E00BD32B6 /* LaunchScreen.storyboard */; };
@@ -29,6 +32,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		935EB94C28D646E500012B9D /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		935EB94E28D6473400012B9D /* CoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModel.swift; sourceTree = "<group>"; };
+		935EB95428D7C5F300012B9D /* CoinsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsDataSource.swift; sourceTree = "<group>"; };
 		93EF66F228D4512D00BD32B6 /* CryptoApp-WIP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CryptoApp-WIP.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EF66F528D4512D00BD32B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93EF66FE28D4512E00BD32B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +95,8 @@
 				93EF672A28D4681700BD32B6 /* Frameworks */,
 				93EF672028D465B000BD32B6 /* Suporting Files */,
 				93EF671A28D45ABC00BD32B6 /* Extensions */,
+				935EB94C28D646E500012B9D /* RealmManager.swift */,
+				935EB94E28D6473400012B9D /* CoinModel.swift */,
 			);
 			path = "CryptoApp-WIP";
 			sourceTree = "<group>";
@@ -144,6 +152,7 @@
 				93EF671E28D4659900BD32B6 /* MainPageVC.swift */,
 				93EF673128D46A2400BD32B6 /* MainPageView.swift */,
 				93EF672B28D469BD00BD32B6 /* MainPageViewModel.swift */,
+				935EB95428D7C5F300012B9D /* CoinsDataSource.swift */,
 			);
 			path = MainPage;
 			sourceTree = "<group>";
@@ -254,10 +263,13 @@
 				93EF673228D46A2400BD32B6 /* MainPageView.swift in Sources */,
 				93EF673028D46A1800BD32B6 /* CoinChartView.swift in Sources */,
 				93EF672E28D46A0C00BD32B6 /* CoinChartViewModel.swift in Sources */,
+				935EB94D28D646E500012B9D /* RealmManager.swift in Sources */,
 				93EF671928D45A9E00BD32B6 /* UIView+Extensions.swift in Sources */,
 				93EF672C28D469BD00BD32B6 /* MainPageViewModel.swift in Sources */,
 				93EF66F628D4512D00BD32B6 /* AppDelegate.swift in Sources */,
+				935EB95528D7C5F300012B9D /* CoinsDataSource.swift in Sources */,
 				93EF672928D467F800BD32B6 /* CoinChartVC.swift in Sources */,
+				935EB94F28D6473400012B9D /* CoinModel.swift in Sources */,
 				93EF671D28D464CE00BD32B6 /* PriceView.swift in Sources */,
 				93EF673428D4728F00BD32B6 /* CointTVC.swift in Sources */,
 			);
@@ -406,7 +418,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -435,7 +447,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

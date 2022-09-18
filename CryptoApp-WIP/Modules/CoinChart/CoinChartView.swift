@@ -38,59 +38,10 @@ final class CoinChartView: UIView {
         return chartView
     }()
     
-    let data: [Double] = [2.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4,2.4,3.6,6.0,3.4]
-    
-    private func prepareChartDataEntry(priceHistory: [Double]) -> [ChartDataEntry] {
-        var dataEntryValues = [CandleChartDataEntry]()
-        
-        for i in 0..<priceHistory.count {
-            let val = priceHistory[i]
-            let high = Double.random(in: 6...8)
-            let low = Double.random(in: 6...8)
-            let open = Double.random(in: 1...6)
-            let close = Double.random(in: 1...6)
-            let even = (i / 2) == 0
-            
-            let entry = CandleChartDataEntry(x: Double(i),
-                                             shadowH: val + high,
-                                             shadowL: val - low,
-                                             open: even ? val + open : val - open,
-                                             close: even ? val - close : val + close)
-            
-            dataEntryValues.append(entry)
-        }
-        
-        return dataEntryValues
-    }
-    
-    private func prepareCandleChartDataSet(entryValues: [ChartDataEntry]) -> CandleChartDataSet {
-        let set = CandleChartDataSet(entries: entryValues, label: "Price")
-        set.axisDependency = .left
-        set.drawIconsEnabled = false
-        set.drawValuesEnabled = false
-        set.shadowColor = .darkGray
-        set.shadowWidth = 0.7
-        set.decreasingColor = .redColor
-        set.decreasingFilled = true
-        set.increasingColor = .greenColor
-        set.increasingFilled = true
-        set.neutralColor = .blue
-        
-        return set
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
         setupConstraints()
-        
-        coinImageView.kf.setImage(
-            with: URL(string: "https://www.cryptocompare.com/media/37746243/ltc.png")!,
-            options: kingfisherOptions)
-        
-        let entry = prepareChartDataEntry(priceHistory: data)
-        let datasource = prepareCandleChartDataSet(entryValues: entry)
-        chartView.data = CandleChartData(dataSet: datasource)
     }
     
     required init?(coder: NSCoder) {
