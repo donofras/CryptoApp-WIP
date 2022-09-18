@@ -15,7 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let mainVC =  MainPageVC()
+        let viewModel = MainPageViewModel()
+        let mainVC = MainPageVC(viewModel: viewModel)
         
         let rootNC = UINavigationController(rootViewController: mainVC)
         rootNC.navigationBar.prefersLargeTitles = true
