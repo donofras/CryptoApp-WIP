@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import Charts
 
-class CoinChartVC: UIViewController {
+final class CoinChartVC: UIViewController {
     
     private var coinChartView: CoinChartView!
     private var viewModel: CoinChartViewModel!
@@ -18,11 +18,11 @@ class CoinChartVC: UIViewController {
     convenience init(viewModel: CoinChartViewModel) {
         self.init()
         self.viewModel = viewModel
+        self.title = viewModel.selectedCoin.code
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Chart"
         
         coinChartView = CoinChartView()
         setupBindings()
@@ -33,23 +33,24 @@ class CoinChartVC: UIViewController {
     }
     
     private func setupBindings() {
-        viewModel.$selectedCoin.sink(receiveValue: { [weak self] coin in
+        viewModel.$selectedCoin.sink { [weak self] coin in
             guard let self = self else { return }
-
-            self.coinChartView.coinTitleLabel.text = coin.code
-            self.viewModel.getChartDataForCoin()
+            
+            self.coinChartView.coinTitleLabel.text = coin.name
+            self.viewModel.getChartData()
             if let coinImageURLString = coin.imageStringURL, let imageURL = URL(string: coinImageURLString) {
                 self.coinChartView.coinImageView.kf.setImage(
                     with: imageURL,
                     options: kingfisherOptions)
             }
-        }).store(in: &subscriptions)
+        }
+        .store(in: &subscriptions)
         
-        
-        viewModel.$chartData.sink(receiveValue: { [weak self] dataSet in
+        viewModel.$chartData.sink { [weak self] dataSet in
             guard let self = self else { return }
             
             self.coinChartView.chartView.data = dataSet
-        }).store(in: &subscriptions)
+        }
+        .store(in: &subscriptions)
     }
 }

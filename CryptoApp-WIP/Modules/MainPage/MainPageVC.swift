@@ -40,12 +40,13 @@ final class MainPageVC: UIViewController {
     }
     
     private func setupBindings() {
-        viewModel.$coinsArray.sink(receiveValue: { [weak self] coins in
+        viewModel.$coinsArray.sink { [weak self] coins in
             guard let self = self else { return }
             
             let snapshot = self.viewModel.createSnapshot(coins: coins)
             self.dataSource.apply(snapshot)
-        }).store(in: &subscriptions)
+        }
+        .store(in: &subscriptions)
     }
     
     private func pushCoinChartVC(coin: CoinModel) {

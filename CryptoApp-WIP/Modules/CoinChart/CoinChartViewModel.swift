@@ -17,20 +17,20 @@ final class CoinChartViewModel {
         self.selectedCoin = selectedCoin
     }
     
-    func getChartDataForCoin() {
-        if let coinPriceHistory = getCoinPriceHistoryForLast(seconds: 30) {
-            let dataEntryValues = prepareDataEntry(priceHistory: coinPriceHistory)
-            let dataSetForChart = prepareDataSet(entries: dataEntryValues)
-            chartData = CandleChartData(dataSet: dataSetForChart)
+    func getChartData() {
+        guard let priceHistory = getCoinPriceHistory(count: 30) else {
+            return
         }
+        
+        let dataEntryValues = prepareDataEntry(priceHistory: priceHistory)
+        let dataSetForChart = prepareDataSet(entries: dataEntryValues)
+        chartData = CandleChartData(dataSet: dataSetForChart)
     }
     
-    private func getCoinPriceHistoryForLast(seconds: Int) -> [Double]? {
-        
-        if selectedCoin.priceHistory.elements.count >= seconds {
-            
+    private func getCoinPriceHistory(count: Int) -> [Double]? {
+        if selectedCoin.priceHistory.elements.count >= count {
             var values = [Double]()
-            selectedCoin.priceHistory.prefix(seconds).forEach { value in
+            selectedCoin.priceHistory.prefix(count).forEach { value in
                 values.append(value)
             }
             

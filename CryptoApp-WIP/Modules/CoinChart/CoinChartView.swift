@@ -56,20 +56,29 @@ final class CoinChartView: UIView {
         coinImageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(self.snp.topMargin)
-            $0.size.equalTo(100)
+            $0.size.equalTo(Layout.imageSize)
         }
         
         coinTitleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.top.equalTo(coinImageView.snp.bottom).offset(15)
+            $0.top.equalTo(coinImageView.snp.bottom).offset(Layout.titleTopOffses)
         }
         
         chartView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.leading.trailing.equalToSuperview().inset(Layout.chartInset)
             $0.height.equalTo(chartView.snp.width)
-            $0.top.equalTo(coinTitleLabel.snp.bottom).offset(50)
+            $0.top.equalTo(coinTitleLabel.snp.bottom).offset(Layout.charTopOffset)
         }
+    }
+}
+
+extension CoinChartView {
+    private enum Layout {
+        static let imageSize: CGFloat = 100.0
+        static let titleTopOffses: CGFloat = 15.0
+        static let chartInset: CGFloat = 10.0
+        static let charTopOffset: CGFloat = 50.0
     }
 }

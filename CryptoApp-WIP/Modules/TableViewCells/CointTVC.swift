@@ -6,8 +6,8 @@
 //
 
 import UIKit
-import Kingfisher
 import Combine
+import Kingfisher
 
 final class CointTVC: UITableViewCell {
     
@@ -54,8 +54,8 @@ final class CointTVC: UITableViewCell {
         return stackView
     }()
     
-    private lazy var minPriceView = LimitPriceView(type: .min)
-    private lazy var maxPriceView = LimitPriceView(type: .max)
+    private lazy var minPriceView = LimitView(type: .min)
+    private lazy var maxPriceView = LimitView(type: .max)
     
     private lazy var pricesStackView: UIStackView = {
         var stackView = UIStackView(arrangedSubviews: [minPriceView, maxPriceView])
@@ -100,22 +100,12 @@ final class CointTVC: UITableViewCell {
         
         return lineView
     }()
-      
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none
         
         setupConstraints()
-        coinImageView.kf.setImage(
-            with: URL(string: "https://www.cryptocompare.com/media/37746243/ltc.png")!,
-            options: kingfisherOptions)
-        
-        minPriceView.setValue(value: 1234.0)
-        maxPriceView.setValue(value: Double.random(in: 3000...12000))
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            self?.priceView.setBackgroundCollor(color: .greenColor)
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -129,37 +119,36 @@ final class CointTVC: UITableViewCell {
     
     private func setupBindings() {
         
-        RealmManager.shared().$updatedCoin.sink(receiveValue: { [weak self] receivedValue in
+        RealmManager.shared().$updatedCoin.sink { [weak self] receivedCoin in
             guard let self = self else { return }
             
-            if let receivedValue = receivedValue {
-                if self.coin.name == receivedValue.name {
-                    self.coin = receivedValue
-                }
+            if let coin = receivedCoin {
+                if self.coin.name == coin.name { self.coin = coin }
             }
-        }).store(in: &subscriptions)
+        }
+        .store(in: &subscriptions)
         
-        $coin.sink(receiveValue: { [weak self] receivedCoin in
+        $coin.sink { [weak self] receivedCoin in
             guard let self = self else { return }
             
-            if let receivedCoin = receivedCoin {
-                
-                if let imageURLString = receivedCoin.imageStringURL,
-                    let imageURL = URL(string: imageURLString) {
+            if let coin = receivedCoin {
+                if let imageURLString = coin.imageStringURL,
+                   let imageURL = URL(string: imageURLString) {
                     self.coinImageView.kf.setImage(
                         with: imageURL,
                         options: kingfisherOptions)
                 }
-
-                self.titleLabel.text = receivedCoin.name
-                self.codeLabel.text = receivedCoin.code
                 
-                //Add type of price dentine for animation
-                self.priceView.setValue(value: receivedCoin.lastPrice)
-                self.minPriceView.setValue(value: receivedCoin.minPrice)
-                self.maxPriceView.setValue(value: receivedCoin.maxPrice)
+                self.titleLabel.text = coin.name
+                self.codeLabel.text = coin.code
+                
+                let trend = PriceTrend(rawValue: coin.priceTrend) ?? .none
+                self.priceView.setValue(value: coin.price, trend: trend)
+                self.minPriceView.setValue(value: coin.minPrice)
+                self.maxPriceView.setValue(value: coin.maxPrice)
             }
-        }).store(in: &subscriptions)
+        }
+        .store(in: &subscriptions)
     }
     
     func setupConstraints() {
@@ -192,13 +181,3 @@ extension CointTVC {
         static let vInset: CGFloat = 10.0
     }
 }
-
-// TODO: Move to constants!
-let imageTransitionDuration: TimeInterval = 0.3
-let retryOfFailDownloadImage: Int = 3
-let kingfisherOptions: KingfisherOptionsInfo = [
-    .scaleFactor(UIScreen.main.scale),
-    .transition(.fade(imageTransitionDuration)),
-    .cacheOriginalImage,
-    .retryStrategy(DelayRetryStrategy(maxRetryCount: retryOfFailDownloadImage))
-]
